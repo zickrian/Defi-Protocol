@@ -1,5 +1,5 @@
 import { Navbar } from "@/components/sections/navbar";
-import { Architecture } from "@/components/sections/architecture";
+
 import { Hero } from "@/components/sections/hero";
 import { SupportedAssets } from "@/components/sections/supported-assets";
 import { CrossChainFlow } from "@/components/sections/cross-chain-flow";
@@ -18,7 +18,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-background font-sans text-text antialiased selection:bg-primary/20">
       <Navbar />
-      <Architecture />
+
       <Hero />
       <SupportedAssets />
       <CrossChainFlow />
