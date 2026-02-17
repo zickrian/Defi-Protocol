@@ -8,7 +8,6 @@ import { RiskEngine } from "@/components/sections/risk-engine";
 import { OracleInfra } from "@/components/sections/oracle-infra";
 import { Security } from "@/components/sections/security";
 import { CapitalEfficiency } from "@/components/sections/capital-efficiency";
-import { Metrics } from "@/components/sections/metrics";
 import { Developers } from "@/components/sections/developers";
 import { FAQ } from "@/components/sections/faq";
 import { Newsletter } from "@/components/sections/newsletter";
@@ -27,7 +26,6 @@ export default function Home() {
       <OracleInfra />
       <Security />
       <CapitalEfficiency />
-      <Metrics />
       <Developers />
       <FAQ />
       <Newsletter />
