@@ -2,8 +2,8 @@
 
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { ArrowRight, TrendingUp, Activity, Wallet, ShieldCheck } from "lucide-react";
+import { Globe } from "@/components/ui/globe";
+import { ArrowRight, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function Hero() {
@@ -72,85 +72,39 @@ export function Hero() {
                         </motion.div>
                     </div>
 
-                    {/* Right Visual (Dashboard Cards) */}
-                    <div className="relative max-w-[600px] mx-auto lg:mx-0 w-full perspective-1000">
-                        {/* Glow Effect */}
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-indigo-500/10 blur-[100px] rounded-full -z-10" />
+                    {/* Right Visual (Globe) */}
+                    <div className="relative h-[500px] w-full flex items-center justify-center">
+                        <div className="absolute inset-0 bg-indigo-500/10 blur-[100px] rounded-full -z-10" />
+                        <Globe className="w-full max-w-[600px] h-full" />
 
+                        {/* Floating Card: TSLA on Robinhood */}
                         <motion.div
-                            animate={{ y: [0, -10, 0] }}
-                            transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-                            className="relative z-10"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 1, duration: 0.8 }}
+                            className="absolute bottom-10 left-0 md:left-10 bg-white/90 backdrop-blur-md shadow-xl border-white/50 p-4 rounded-xl ring-1 ring-black/5 z-20"
                         >
-                            {/* Main Dashboard Card */}
-                            <Card className="bg-white/80 backdrop-blur-xl border-white/40 shadow-2xl p-6 rounded-2xl ring-1 ring-black/5">
-                                <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center">
-                                            <span className="font-bold text-indigo-600">TSLA</span>
-                                        </div>
-                                        <div>
-                                            <div className="font-bold text-lg">Tesla Inc. Strategy</div>
-                                            <div className="text-xs text-gray-500">Robinhood Chain • Native</div>
-                                        </div>
-                                    </div>
-                                    <div className="bg-green-50 text-green-700 px-2 py-1 rounded-md text-xs font-bold border border-green-100">
-                                        Active
-                                    </div>
+                            <div className="flex items-center gap-3">
+                                <div className="h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center">
+                                    <span className="font-bold text-indigo-600">TSLA</span>
                                 </div>
-
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="p-3 bg-gray-50 rounded-xl border border-gray-100">
-                                        <div className="text-xs text-gray-500 mb-1">Collateral Value</div>
-                                        <div className="text-xl font-bold text-text">$248,500</div>
-                                        <div className="text-[10px] text-green-600 mt-1 flex items-center">
-                                            <TrendingUp className="h-3 w-3 mr-1" /> +2.4% (24h)
-                                        </div>
-                                    </div>
-                                    <div className="p-3 bg-indigo-50 rounded-xl border border-indigo-100">
-                                        <div className="text-xs text-indigo-600 mb-1">Borrow Capacity</div>
-                                        <div className="text-xl font-bold text-indigo-900">$140,000</div>
-                                        <div className="text-[10px] text-indigo-600 mt-1">
-                                            USDC on Arbitrum
-                                        </div>
-                                    </div>
+                                <div>
+                                    <div className="font-bold text-sm">Tesla Inc.</div>
+                                    <div className="text-xs text-green-600">+2.4% Native</div>
                                 </div>
-                            </Card>
+                            </div>
+                        </motion.div>
 
-                            {/* Floating Elements */}
-                            <motion.div
-                                animate={{ y: [0, 15, 0] }}
-                                transition={{ repeat: Infinity, duration: 7, delay: 1, ease: "easeInOut" }}
-                                className="absolute -right-8 -top-12 z-20 w-48"
-                            >
-                                <Card className="bg-white/90 backdrop-blur-md shadow-xl border-white/50 p-4 rounded-xl ring-1 ring-black/5">
-                                    <div className="flex items-center gap-3 mb-2">
-                                        <Activity className="h-5 w-5 text-green-500" />
-                                        <div className="font-bold text-sm">Health Factor</div>
-                                    </div>
-                                    <div className="text-2xl font-bold text-green-600">1.42</div>
-                                    <div className="w-full bg-gray-100 h-1.5 rounded-full mt-2 overflow-hidden">
-                                        <div className="bg-green-500 w-[70%] h-full" />
-                                    </div>
-                                </Card>
-                            </motion.div>
-
-                            <motion.div
-                                animate={{ y: [0, -12, 0] }}
-                                transition={{ repeat: Infinity, duration: 8, delay: 0.5, ease: "easeInOut" }}
-                                className="absolute -left-8 -bottom-8 z-30 w-56"
-                            >
-                                <Card className="bg-white/90 backdrop-blur-md shadow-xl border-white/50 p-4 rounded-xl ring-1 ring-black/5">
-                                    <div className="flex items-center justify-between mb-2">
-                                        <div className="text-sm font-medium text-gray-500">Net APY</div>
-                                        <div className="text-xs bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded">Stable</div>
-                                    </div>
-                                    <div className="flex items-baseline gap-1">
-                                        <span className="text-2xl font-bold text-text">4.8%</span>
-                                        <span className="text-xs text-gray-400">Fixed</span>
-                                    </div>
-                                </Card>
-                            </motion.div>
+                        {/* Floating Card: Cross-Chain Liquidity */}
+                        <motion.div
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 1.2, duration: 0.8 }}
+                            className="absolute top-10 right-0 md:right-10 bg-white/90 backdrop-blur-md shadow-xl border-white/50 p-4 rounded-xl ring-1 ring-black/5 z-20"
+                        >
+                            <div className="text-xs text-gray-500 mb-1">Borrow Capacity</div>
+                            <div className="text-lg font-bold text-indigo-600">$140,000</div>
+                            <div className="text-[10px] text-gray-400">USDC on Arbitrum</div>
                         </motion.div>
                     </div>
                 </div>
