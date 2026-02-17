@@ -8,9 +8,10 @@ import { motion } from "framer-motion";
 
 export function Hero() {
     return (
-        <section className="relative overflow-hidden pt-20 pb-24 lg:pt-32 lg:pb-32 bg-background">
+        <section className="relative overflow-hidden pt-12 pb-8 lg:pt-20 lg:pb-12 bg-background">
             {/* Background Pattern */}
-            <div className="absolute inset-0 -z-10 h-full w-full bg-white [background-image:radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:24px_24px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_0%,#000_70%,transparent_100%)]" />
+            <div className="absolute inset-0 -z-10 h-full w-full bg-dot-pattern opacity-50" />
+            <div className="absolute inset-0 -z-10 h-full w-full bg-gradient-to-b from-transparent via-background/50 to-background" />
 
             <Container>
                 <div className="grid gap-16 lg:grid-cols-2 lg:gap-24 items-center">

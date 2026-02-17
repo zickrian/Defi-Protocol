@@ -14,7 +14,7 @@ const assets = [
 
 export function SupportedAssets() {
     return (
-        <section className="py-24 bg-background">
+        <section className="pt-4 pb-24 bg-background">
             <Container>
                 <div className="mb-12">
                     <h2 className="text-3xl font-bold tracking-tight text-text sm:text-4xl mb-4">
@@ -27,20 +27,22 @@ export function SupportedAssets() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
                     {assets.map((asset) => (
-                        <Card key={asset.ticker} className="group hover:border-primary/50 transition-colors cursor-default">
-                            <CardContent className="p-6">
+                        <Card key={asset.ticker} className="group relative overflow-hidden transition-all duration-300 hover:shadow-lg border-border hover:border-primary/20 bg-background/50 backdrop-blur-sm">
+                            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                            <CardContent className="p-6 relative z-10">
                                 <div className="flex justify-between items-start mb-4">
-                                    <div className="font-bold text-xl text-text">{asset.ticker}</div>
-                                    <Badge variant="secondary" className="text-[10px] px-1.5 h-5">Native</Badge>
-                                </div>
-                                <div className="space-y-1">
-                                    <div className="text-2xl font-semibold tracking-tight">{asset.price}</div>
-                                    <div className={`text-sm font-medium ${asset.change.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
-                                        {asset.change}
+                                    <div>
+                                        <div className="font-bold text-xl text-text group-hover:text-primary transition-colors">{asset.ticker}</div>
+                                        <div className="text-xs text-muted-foreground">{asset.name}</div>
                                     </div>
+                                    <Badge variant="secondary" className="text-[10px] px-2 py-0.5 font-medium bg-surface border border-border">Native</Badge>
                                 </div>
-                                <div className="mt-4 text-xs text-gray-400 group-hover:text-primary transition-colors">
-                                    Real-time Oracle
+                                <div className="space-y-1 mt-6">
+                                    <div className="text-3xl font-bold tracking-tight">{asset.price}</div>
+                                    <div className={`text-sm font-medium flex items-center gap-1 ${asset.change.startsWith('+') ? 'text-emerald-600' : 'text-rose-600'}`}>
+                                        {asset.change.startsWith('+') ? '↑' : '↓'} {asset.change}
+                                        <span className="text-muted-foreground font-normal ml-auto text-xs">24h</span>
+                                    </div>
                                 </div>
                             </CardContent>
                         </Card>
