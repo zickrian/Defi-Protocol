@@ -5,7 +5,7 @@ import { Terminal, Code2, Book, Github, ArrowRight } from "lucide-react";
 
 export function Developers() {
     return (
-        <section className="py-24 bg-zinc-50 border-b border-border" id="developers">
+        <section className="py-24 bg-white" id="developers">
             <Container>
                 <div className="grid lg:grid-cols-2 gap-16 items-center">
 

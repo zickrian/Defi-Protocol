@@ -16,7 +16,7 @@ const assets = [
 
 export function SupportedAssets() {
     return (
-        <section className="py-24 bg-zinc-50 border-b border-border overflow-hidden">
+        <section className="py-24 bg-white overflow-hidden">
             <Container>
                 <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
                     <div>

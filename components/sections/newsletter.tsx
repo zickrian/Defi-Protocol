@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 
 export function Newsletter() {
     return (
-        <section className="py-32 bg-white border-y border-border relative overflow-hidden">
+        <section className="py-32 bg-white relative overflow-hidden">
             <Container>
                 <div className="mx-auto max-w-4xl text-center">
                     <h2 className="text-5xl font-bold tracking-tight text-foreground sm:text-7xl mb-8">

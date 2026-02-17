@@ -4,7 +4,7 @@ import { FileCheck, Shield, Lock, Eye } from "lucide-react";
 
 export function Security() {
     return (
-        <section className="py-24 bg-white border-b border-border">
+        <section className="py-24 bg-white relative">
             <Container>
                 <div className="grid lg:grid-cols-2 gap-16 items-center">
                     {/* Left Column: Visual */}

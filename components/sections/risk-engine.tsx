@@ -4,7 +4,7 @@ import { ShieldCheck, BarChart3, Zap } from "lucide-react";
 
 export function RiskEngine() {
     return (
-        <section className="py-24 bg-white border-b border-border relative overflow-hidden">
+        <section className="py-24 bg-white relative overflow-hidden">
             {/* Background elements */}
             <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-gray-100 rounded-full blur-3xl opacity-50 -z-10" />
 
