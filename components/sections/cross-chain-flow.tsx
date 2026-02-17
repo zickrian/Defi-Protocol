@@ -1,74 +1,68 @@
-"use client";
-
+import { ProcessDiagram } from "@/components/visuals/process-diagram";
 import { Container } from "@/components/ui/container";
-import { ArrowRight, Lock, Radio, ShieldAlert, Coins } from "lucide-react";
-
-const steps = [
-    {
-        id: 1,
-        title: "Deposit",
-        description: "Lock TSLA on Robinhood Chain",
-        icon: Lock,
-    },
-    {
-        id: 2,
-        title: "Oracle",
-        description: "Price feeds & proof verification",
-        icon: Radio,
-    },
-    {
-        id: 3,
-        title: "Risk Engine",
-        description: "Calculate Borrow Power",
-        icon: ShieldAlert,
-    },
-    {
-        id: 4,
-        title: "Borrow",
-        description: "Mint USDC on Arbitrum",
-        icon: Coins,
-    },
-];
+import { Lock, Radio, ShieldAlert, Coins, CheckCircle2 } from "lucide-react";
 
 export function CrossChainFlow() {
     return (
         <section className="py-24 bg-surface/30 border-y border-border">
             <Container>
-                <div className="mb-16 text-center">
-                    <h2 className="text-3xl font-bold tracking-tight text-text sm:text-4xl mb-4">
-                        How It Works
-                    </h2>
-                    <p className="text-gray-600">
-                        The lifecycle of a cross-chain loan in 4 steps.
-                    </p>
-                </div>
+                <div className="grid lg:grid-cols-2 gap-16 items-center">
+                    {/* Left Column: Text Steps */}
+                    <div>
+                        <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl mb-6">
+                            Cross-Chain Lending <br />
+                            <span className="text-muted-foreground">Without Bridging Assets</span>
+                        </h2>
+                        <p className="text-lg text-muted-foreground mb-12 leading-relaxed">
+                            Our unique architecture allows you to keep custody of your assets on the source chain while unlocking liquidity on Arbitrum. No wrapping, no bridging risk.
+                        </p>
 
-                <div className="relative">
-                    {/* Connecting Line (Desktop) */}
-                    <div className="hidden lg:block absolute top-12 left-0 w-full h-0.5 bg-gray-200 -z-10" />
+                        <div className="space-y-8 relative">
+                            {/* Vertical Line */}
+                            <div className="absolute left-6 top-4 bottom-4 w-px bg-border -z-10" />
 
-                    <div className="grid gap-8 lg:grid-cols-4">
-                        {steps.map((step, index) => (
-                            <div key={step.id} className="relative group">
-                                <div className="flex flex-col items-center text-center">
-                                    <div className="relative flex h-24 w-24 items-center justify-center rounded-2xl bg-white border-2 border-border shadow-sm group-hover:border-primary group-hover:scale-105 transition-all duration-300">
-                                        <step.icon className="h-10 w-10 text-gray-400 group-hover:text-primary transition-colors" />
-                                        <div className="absolute -top-3 -right-3 flex h-8 w-8 items-center justify-center rounded-full bg-surface border border-border text-sm font-bold text-gray-500 group-hover:bg-primary group-hover:text-white transition-colors">
-                                            {step.id}
-                                        </div>
-                                    </div>
-                                    <h3 className="mt-6 text-xl font-bold text-text">{step.title}</h3>
-                                    <p className="mt-2 text-sm text-gray-600 px-4">{step.description}</p>
+                            <div className="relative flex gap-6 group">
+                                <div className="flex-none h-12 w-12 rounded-full border border-border bg-white flex items-center justify-center shadow-sm group-hover:border-black transition-colors z-10">
+                                    <Lock className="h-5 w-5 text-muted-foreground group-hover:text-black transition-colors" />
                                 </div>
-
-                                {/* Arrow for mobile/tablet */}
-                                {index < steps.length - 1 && (
-                                    <div className="lg:hidden flex justify-center py-4">
-                                        <ArrowRight className="text-gray-300 transform rotate-90" />
-                                    </div>
-                                )}
+                                <div>
+                                    <h3 className="text-lg font-bold text-foreground">1. Deposit & Lock</h3>
+                                    <p className="text-muted-foreground text-sm mt-1">
+                                        Your assets (TSLA, AMZN) are locked in a native vault on the Robinhood Chain. You retain full ownership rights.
+                                    </p>
+                                </div>
                             </div>
-                        ))}
+
+                            <div className="relative flex gap-6 group">
+                                <div className="flex-none h-12 w-12 rounded-full border border-border bg-white flex items-center justify-center shadow-sm group-hover:border-black transition-colors z-10">
+                                    <Radio className="h-5 w-5 text-muted-foreground group-hover:text-black transition-colors" />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-bold text-foreground">2. Oracle Verification</h3>
+                                    <p className="text-muted-foreground text-sm mt-1">
+                                        Decentralized oracles verify the lock event and transmit price feeds securely to the Arbitrum network.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="relative flex gap-6 group">
+                                <div className="flex-none h-12 w-12 rounded-full border border-border bg-white flex items-center justify-center shadow-sm group-hover:border-black transition-colors z-10">
+                                    <Coins className="h-5 w-5 text-muted-foreground group-hover:text-black transition-colors" />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-bold text-foreground">3. Mint Stablecoins</h3>
+                                    <p className="text-muted-foreground text-sm mt-1">
+                                        Mint USDC directly on Arbitrum against your collateral. Funds are instantly available for DeFi strategies.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right Column: Visual Diagram */}
+                    <div className="relative">
+                        <div className="absolute -inset-4 bg-gradient-to-r from-primary/5 to-secondary/5 rounded-3xl blur-2xl -z-10" />
+                        <ProcessDiagram />
                     </div>
                 </div>
             </Container>

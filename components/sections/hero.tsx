@@ -25,7 +25,7 @@ export function Hero() {
 
                             <h1 className="text-5xl font-extrabold tracking-tight text-text sm:text-7xl leading-[1.1]">
                                 Borrow Without <br className="hidden sm:block" />
-                                <span className="text-indigo-600">
+                                <span className="text-foreground">
                                     Moving Your Stocks
                                 </span>
                             </h1>
@@ -46,11 +46,11 @@ export function Hero() {
                             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
                             className="flex flex-wrap gap-4"
                         >
-                            <Button size="lg" className="rounded-full px-8 h-12 text-base shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 transition-all">
+                            <Button size="lg" className="rounded-full px-8 h-12 text-base shadow-lg shadow-black/5 hover:shadow-black/10 transition-all bg-black text-white hover:bg-gray-800">
                                 Launch DApp
                                 <ArrowRight className="ml-2 h-4 w-4" />
                             </Button>
-                            <Button variant="outline" size="lg" className="rounded-full px-8 h-12 text-base bg-white/50 backdrop-blur-sm hover:bg-white">
+                            <Button variant="outline" size="lg" className="rounded-full px-8 h-12 text-base bg-white/50 backdrop-blur-sm hover:bg-white text-foreground border-border">
                                 Read Documentation
                             </Button>
                         </motion.div>
@@ -74,7 +74,7 @@ export function Hero() {
 
                     {/* Right Visual (Globe) */}
                     <div className="relative h-[500px] w-full flex items-center justify-center">
-                        <div className="absolute inset-0 bg-indigo-500/10 blur-[100px] rounded-full -z-10" />
+                        <div className="absolute inset-0 bg-primary/5 blur-[100px] rounded-full -z-10" />
                         <Globe className="w-full max-w-[600px] h-full" />
 
                         {/* Floating Card: TSLA on Robinhood */}
@@ -82,15 +82,15 @@ export function Hero() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 1, duration: 0.8 }}
-                            className="absolute bottom-10 left-0 md:left-10 bg-white/90 backdrop-blur-md shadow-xl border-white/50 p-4 rounded-xl ring-1 ring-black/5 z-20"
+                            className="absolute bottom-10 left-0 md:left-10 bg-white/80 backdrop-blur-md shadow-xl border-white/20 p-4 rounded-xl ring-1 ring-black/5 z-20"
                         >
                             <div className="flex items-center gap-3">
-                                <div className="h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center">
-                                    <span className="font-bold text-indigo-600">TSLA</span>
+                                <div className="h-10 w-10 bg-black/5 rounded-full flex items-center justify-center">
+                                    <span className="font-bold text-foreground">TSLA</span>
                                 </div>
                                 <div>
-                                    <div className="font-bold text-sm">Tesla Inc.</div>
-                                    <div className="text-xs text-green-600">+2.4% Native</div>
+                                    <div className="font-bold text-sm text-foreground">Tesla Inc.</div>
+                                    <div className="text-xs text-emerald-600">+2.4% Native</div>
                                 </div>
                             </div>
                         </motion.div>
@@ -100,11 +100,11 @@ export function Hero() {
                             initial={{ opacity: 0, y: -20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 1.2, duration: 0.8 }}
-                            className="absolute top-10 right-0 md:right-10 bg-white/90 backdrop-blur-md shadow-xl border-white/50 p-4 rounded-xl ring-1 ring-black/5 z-20"
+                            className="absolute top-10 right-0 md:right-10 bg-white/80 backdrop-blur-md shadow-xl border-white/20 p-4 rounded-xl ring-1 ring-black/5 z-20"
                         >
-                            <div className="text-xs text-gray-500 mb-1">Borrow Capacity</div>
-                            <div className="text-lg font-bold text-indigo-600">$140,000</div>
-                            <div className="text-[10px] text-gray-400">USDC on Arbitrum</div>
+                            <div className="text-xs text-muted-foreground mb-1">Borrow Capacity</div>
+                            <div className="text-lg font-bold text-foreground">$140,000</div>
+                            <div className="text-[10px] text-muted-foreground">USDC on Arbitrum</div>
                         </motion.div>
                     </div>
                 </div>

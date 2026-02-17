@@ -29,7 +29,7 @@ export function Navbar() {
                             <Link
                                 key={link.name}
                                 href={link.href}
-                                className="text-sm font-medium text-gray-500 transition-colors hover:text-primary"
+                                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
                             >
                                 {link.name}
                             </Link>
