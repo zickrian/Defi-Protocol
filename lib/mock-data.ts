@@ -8,7 +8,7 @@
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
-export type AssetSymbol = 'TSLA' | 'AMZN' | 'PLTR' | 'NFLX' | 'AMD' | 'USDC' | 'ETH'
+export type AssetSymbol = 'TSLA' | 'AMZN' | 'PLTR' | 'NFLX' | 'AMD' | 'USDC' | 'ETH' | 'BTC'
 
 export interface MarketAsset {
     symbol: AssetSymbol
@@ -153,6 +153,18 @@ export const MARKETS: MarketAsset[] = [
         collateralFactor: 0.80,
         liquidationThreshold: 0.85,
         icon: '⟠',
+    },
+    {
+        symbol: 'BTC',
+        name: 'Bitcoin',
+        price: 97_350.00,
+        supplyApy: 0.5,
+        borrowApy: 1.8,
+        totalSupplied: 6_800_000,
+        totalBorrowed: 4_100_000,
+        collateralFactor: 0.80,
+        liquidationThreshold: 0.85,
+        icon: '₿',
     },
 ]
 

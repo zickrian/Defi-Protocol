@@ -6,6 +6,7 @@ import Link from "next/link"
 import { useMarket, useUserStats } from "@/hooks/useProtocol"
 import { HealthFactorBadge } from "@/components/ui/health-factor-badge"
 import { HealthFactorModal } from "@/components/ui/health-factor-modal"
+import { AssetIcon } from "@/components/ui/asset-icon"
 import { Button } from "@/components/ui/button"
 import {
     formatUsd,
@@ -20,9 +21,9 @@ import { ArrowLeft, AlertTriangle } from "lucide-react"
 
 function StatRow({ label, value }: { label: string; value: string }) {
     return (
-        <div className="flex items-center justify-between py-2.5 border-b border-border last:border-0">
-            <span className="text-sm text-muted-foreground">{label}</span>
-            <span className="text-sm font-semibold text-foreground">{value}</span>
+        <div className="flex items-center justify-between py-2.5 border-b border-gray-100 last:border-0">
+            <span className="text-sm text-gray-500">{label}</span>
+            <span className="text-sm font-semibold text-gray-900">{value}</span>
         </div>
     )
 }
@@ -51,14 +52,14 @@ function SupplyPanel({ symbol, price }: SupplyPanelProps) {
     }
 
     return (
-        <div className="rounded-xl border border-border bg-card p-5 space-y-4">
-            <h3 className="text-sm font-semibold text-foreground uppercase tracking-widest">
+        <div className="rounded-2xl border border-[#E5E7EB] bg-white shadow-sm p-5 space-y-4">
+            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
                 Supply
             </h3>
 
             <div className="space-y-1.5">
-                <label className="text-xs text-muted-foreground">Amount</label>
-                <div className="flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 focus-within:ring-1 focus-within:ring-ring">
+                <label className="text-xs text-gray-500">Amount</label>
+                <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 focus-within:ring-1 focus-within:ring-indigo-300">
                     <input
                         type="number"
                         min="0"
@@ -66,12 +67,12 @@ function SupplyPanel({ symbol, price }: SupplyPanelProps) {
                         value={amount}
                         onChange={(e) => setAmount(e.target.value)}
                         placeholder="0.00"
-                        className="flex-1 text-sm bg-transparent outline-none text-foreground placeholder:text-muted-foreground"
+                        className="flex-1 text-sm bg-transparent outline-none text-gray-900 placeholder:text-gray-400"
                     />
-                    <span className="text-xs font-semibold text-muted-foreground">{symbol}</span>
+                    <span className="text-xs font-semibold text-gray-500">{symbol}</span>
                 </div>
                 {amount && Number(amount) > 0 && (
-                    <p className="text-xs text-muted-foreground pl-1">
+                    <p className="text-xs text-gray-500 pl-1">
                         ≈ {formatUsd(valueUsd)}
                     </p>
                 )}
@@ -83,9 +84,9 @@ function SupplyPanel({ symbol, price }: SupplyPanelProps) {
                     type="checkbox"
                     checked={asCollateral}
                     onChange={(e) => setAsCollateral(e.target.checked)}
-                    className="w-4 h-4 rounded border-border accent-foreground"
+                    className="w-4 h-4 rounded border-gray-300 accent-indigo-500"
                 />
-                <span className="text-sm text-foreground">Use as collateral</span>
+                <span className="text-sm text-gray-900">Use as collateral</span>
             </label>
 
             <Button
@@ -144,14 +145,14 @@ function BorrowPanel({ symbol, price }: BorrowPanelProps) {
 
     return (
         <>
-            <div className="rounded-xl border border-border bg-card p-5 space-y-4">
-                <h3 className="text-sm font-semibold text-foreground uppercase tracking-widest">
+            <div className="rounded-2xl border border-[#E5E7EB] bg-white shadow-sm p-5 space-y-4">
+                <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
                     Borrow
                 </h3>
 
                 <div className="space-y-1.5">
-                    <label className="text-xs text-muted-foreground">Amount</label>
-                    <div className="flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 focus-within:ring-1 focus-within:ring-ring">
+                    <label className="text-xs text-gray-500">Amount</label>
+                    <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 focus-within:ring-1 focus-within:ring-indigo-300">
                         <input
                             type="number"
                             min="0"
@@ -159,12 +160,12 @@ function BorrowPanel({ symbol, price }: BorrowPanelProps) {
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                             placeholder="0.00"
-                            className="flex-1 text-sm bg-transparent outline-none text-foreground placeholder:text-muted-foreground"
+                            className="flex-1 text-sm bg-transparent outline-none text-gray-900 placeholder:text-gray-400"
                         />
-                        <span className="text-xs font-semibold text-muted-foreground">{symbol}</span>
+                        <span className="text-xs font-semibold text-gray-500">{symbol}</span>
                     </div>
                     {amount && Number(amount) > 0 && (
-                        <p className="text-xs text-muted-foreground pl-1">
+                        <p className="text-xs text-gray-500 pl-1">
                             ≈ {formatUsd(borrowUsd)}
                         </p>
                     )}
@@ -172,8 +173,8 @@ function BorrowPanel({ symbol, price }: BorrowPanelProps) {
 
                 {/* HF preview */}
                 {amount && Number(amount) > 0 && (
-                    <div className="flex items-center gap-2.5 p-3 rounded-lg bg-muted/30 border border-border">
-                        <span className="text-xs text-muted-foreground">HF after borrow:</span>
+                    <div className="flex items-center gap-2.5 p-3 rounded-lg bg-gray-50 border border-gray-200">
+                        <span className="text-xs text-gray-500">HF after borrow:</span>
                         <HealthFactorBadge value={hfAfter} />
                         {isRisky && (
                             <AlertTriangle className="w-3.5 h-3.5 text-yellow-500 ml-auto" />
@@ -223,10 +224,10 @@ export default function AssetDetailPage() {
 
     if (isLoading) {
         return (
-            <div className="p-6">
+            <div className="max-w-6xl mx-auto px-6 py-8">
                 <div className="animate-pulse space-y-4">
-                    <div className="h-6 w-32 bg-border/60 rounded" />
-                    <div className="h-4 w-48 bg-border/60 rounded" />
+                    <div className="h-6 w-32 bg-gray-200 rounded" />
+                    <div className="h-4 w-48 bg-gray-200 rounded" />
                 </div>
             </div>
         )
@@ -234,8 +235,8 @@ export default function AssetDetailPage() {
 
     if (!asset) {
         return (
-            <div className="p-6 space-y-4">
-                <p className="text-sm text-muted-foreground">
+            <div className="max-w-6xl mx-auto px-6 py-8 space-y-4">
+                <p className="text-sm text-gray-500">
                     Asset &quot;{assetSymbol}&quot; not found.
                 </p>
                 <Button variant="outline" onClick={() => router.push("/dashboard/markets")}>
@@ -246,11 +247,11 @@ export default function AssetDetailPage() {
     }
 
     return (
-        <div className="p-6 space-y-6 max-w-4xl">
+        <div className="max-w-6xl mx-auto px-6 py-8 space-y-6">
             {/* Breadcrumb */}
             <Link
                 href="/dashboard/markets"
-                className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-900 transition-colors"
             >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 Back to Markets
@@ -258,25 +259,23 @@ export default function AssetDetailPage() {
 
             {/* Header */}
             <div className="flex items-center gap-4">
-                <span className="w-12 h-12 rounded-xl bg-muted/50 flex items-center justify-center text-2xl">
-                    {asset.icon}
-                </span>
+                <AssetIcon symbol={asset.symbol} size={48} />
                 <div>
-                    <h1 className="text-xl font-bold text-foreground">{asset.symbol}</h1>
-                    <p className="text-sm text-muted-foreground">{asset.name}</p>
+                    <h1 className="text-xl font-bold text-gray-900">{asset.symbol}</h1>
+                    <p className="text-sm text-gray-500">{asset.name}</p>
                 </div>
                 <div className="ml-auto text-right">
-                    <div className="text-2xl font-bold font-mono text-foreground">
+                    <div className="text-2xl font-bold font-mono text-gray-900">
                         {formatUsd(asset.price)}
                     </div>
-                    <div className="text-xs text-muted-foreground">Current Price</div>
+                    <div className="text-xs text-gray-400">Current Price</div>
                 </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Stats */}
-                <div className="rounded-xl border border-border bg-card p-5">
-                    <h3 className="text-sm font-semibold text-foreground uppercase tracking-widest mb-3">
+                <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-sm p-5">
+                    <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-3">
                         Market Stats
                     </h3>
                     <StatRow label="Total Supplied" value={formatUsd(asset.totalSupplied)} />

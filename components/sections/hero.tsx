@@ -3,23 +3,10 @@
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { Globe } from "@/components/ui/globe";
-import { ArrowRight, Loader2 } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
-import { useWallet } from "@/hooks/useWallet";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 export function Hero() {
-    const { isConnected, isConnecting, handleConnect } = useWallet()
-    const router = useRouter()
-
-    // Redirect ke dashboard setelah berhasil connect
-    useEffect(() => {
-        if (isConnected) {
-            router.push('/dashboard')
-        }
-    }, [isConnected, router])
-
     return (
         <section className="relative overflow-hidden pt-12 pb-8 lg:pt-20 lg:pb-12 bg-background">
             {/* Background Pattern */}
@@ -62,15 +49,14 @@ export function Hero() {
                             <Button
                                 size="lg"
                                 className="rounded-full px-8 h-12 text-base shadow-lg shadow-black/5 hover:shadow-black/10 transition-all bg-black text-white hover:bg-gray-800"
-                                onClick={handleConnect}
-                                disabled={isConnecting}
                             >
-                                {isConnecting
-                                    ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Connecting...</>
-                                    : <> Launch DApp <ArrowRight className="ml-2 h-4 w-4" /></>
-                                }
+                                Learn more <ArrowRight className="ml-2 h-4 w-4" />
                             </Button>
-                            <Button variant="outline" size="lg" className="rounded-full px-8 h-12 text-base bg-white/50 backdrop-blur-sm hover:bg-white text-foreground border-border">
+                            <Button
+                                variant="outline"
+                                size="lg"
+                                className="rounded-full px-8 h-12 text-base bg-white/50 backdrop-blur-sm hover:bg-white text-foreground border-border"
+                            >
                                 Read Documentation
                             </Button>
                         </motion.div>

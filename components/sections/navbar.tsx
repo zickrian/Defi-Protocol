@@ -3,8 +3,6 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
-import { useWallet } from "@/hooks/useWallet";
-import { Loader2 } from "lucide-react";
 
 const navLinks = [
     { name: "Protocol", href: "#protocol" },
@@ -15,14 +13,6 @@ const navLinks = [
 ];
 
 export function Navbar() {
-    const { isConnected, isConnecting, displayAddress, handleConnect } = useWallet()
-
-    const buttonLabel = isConnecting
-        ? "Connecting..."
-        : isConnected
-            ? (displayAddress ?? "Connected")
-            : "Connect Wallet"
-
     return (
         <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-md">
             <Container>
@@ -46,14 +36,8 @@ export function Navbar() {
                     </nav>
 
                     <div className="flex items-center gap-4">
-                        <Button
-                            variant="default"
-                            className="rounded-full"
-                            onClick={handleConnect}
-                            disabled={isConnecting}
-                        >
-                            {isConnecting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            {buttonLabel}
+                        <Button asChild className="rounded-full">
+                            <Link href="/dashboard">DApp</Link>
                         </Button>
                     </div>
                 </div>
