@@ -1,125 +1,190 @@
-"use client";
+"use client"
 
-import { useWallet } from "@/hooks/useWallet";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { LogOut, Wallet, ExternalLink } from "lucide-react";
-import Link from "next/link";
+import { useProtocolStats, useUserStats, useHealthFactor } from "@/hooks/useProtocol"
+import { useWallet } from "@/hooks/useWallet"
+import { HealthFactorBadge } from "@/components/ui/health-factor-badge"
+import { RiskBar } from "@/components/ui/risk-bar"
+import { formatUsd, formatPercent } from "@/lib/mock-data"
+import { TrendingUp, TrendingDown, Activity, DollarSign } from "lucide-react"
 
-export default function DashboardPage() {
-    const { isConnected, isConnecting, address, displayAddress, disconnect } = useWallet()
-    const router = useRouter()
+// ─── Skeleton ────────────────────────────────────────────────────────────────
 
-    // Redirect ke home jika tidak terkoneksi
-    useEffect(() => {
-        if (!isConnected && !isConnecting) {
-            router.push('/')
-        }
-    }, [isConnected, isConnecting, router])
+function Skeleton({ className = "" }: { className?: string }) {
+    return (
+        <div
+            className={`animate-pulse rounded bg-border/60 ${className}`}
+        />
+    )
+}
 
-    if (!isConnected) {
-        return (
-            <div className="min-h-screen bg-background flex items-center justify-center">
-                <div className="text-center space-y-4">
-                    <div className="w-8 h-8 border-2 border-black border-t-transparent rounded-full animate-spin mx-auto" />
-                    <p className="text-sm text-muted-foreground">Redirecting...</p>
-                </div>
+// ─── Protocol overview cards ─────────────────────────────────────────────────
+
+interface StatCardProps {
+    label: string
+    value: string
+    sub?: string
+    icon: React.ReactNode
+    isLoading?: boolean
+}
+
+function StatCard({ label, value, sub, icon, isLoading }: StatCardProps) {
+    return (
+        <div className="rounded-xl border border-border bg-card p-5 flex flex-col gap-3">
+            <div className="flex items-center justify-between">
+                <span className="text-xs font-medium text-muted-foreground uppercase tracking-widest">
+                    {label}
+                </span>
+                <span className="text-muted-foreground">{icon}</span>
             </div>
-        )
-    }
+            {isLoading ? (
+                <Skeleton className="h-8 w-24" />
+            ) : (
+                <div>
+                    <div className="text-2xl font-bold text-foreground">{value}</div>
+                    {sub && (
+                        <div className="text-xs text-muted-foreground mt-0.5">{sub}</div>
+                    )}
+                </div>
+            )}
+        </div>
+    )
+}
+
+// ─── User position card ───────────────────────────────────────────────────────
+
+function UserPositionCard() {
+    const { data: userStats, isLoading } = useUserStats()
+    const { healthFactor, isLoading: hfLoading } = useHealthFactor()
+    const { displayAddress } = useWallet()
 
     return (
-        <div className="min-h-screen bg-background">
-            {/* Navbar */}
-            <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-md">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex h-16 items-center justify-between">
-                        <Link href="/" className="text-xl font-bold tracking-tight text-text">
-                            Auno
-                        </Link>
-                        <div className="flex items-center gap-3">
-                            <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-full">
-                                <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                                <span className="text-xs font-medium text-emerald-700">Connected</span>
-                            </div>
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                className="rounded-full gap-2"
-                                onClick={() => disconnect()}
-                            >
-                                <LogOut className="h-3.5 w-3.5" />
-                                Disconnect
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </header>
+        <div className="rounded-xl border border-border bg-card p-6">
+            <div className="flex items-center justify-between mb-6">
+                <h2 className="text-sm font-semibold text-foreground uppercase tracking-widest">
+                    Your Position
+                </h2>
+                {displayAddress && (
+                    <span className="text-xs font-mono text-muted-foreground">
+                        {displayAddress}
+                    </span>
+                )}
+            </div>
 
-            {/* Main Content */}
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                <div className="space-y-10">
-                    {/* Header */}
-                    <div className="space-y-2">
-                        <h1 className="text-4xl font-extrabold tracking-tight text-text">
-                            Dashboard
-                        </h1>
-                        <p className="text-muted-foreground text-lg">
-                            Welcome to Auno Protocol
-                        </p>
-                    </div>
-
-                    {/* Wallet Card */}
-                    <div className="rounded-2xl border border-border bg-white p-6 shadow-sm max-w-md">
-                        <div className="flex items-center gap-3 mb-4">
-                            <div className="w-10 h-10 bg-black/5 rounded-full flex items-center justify-center">
-                                <Wallet className="h-5 w-5 text-foreground" />
-                            </div>
-                            <div>
-                                <div className="text-sm font-semibold text-text">Connected Wallet</div>
-                                <div className="text-xs text-muted-foreground">MetaMask</div>
-                            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Left — numbers */}
+                <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-1">
+                            <div className="text-xs text-muted-foreground">Your Collateral</div>
+                            {isLoading ? (
+                                <Skeleton className="h-6 w-20" />
+                            ) : (
+                                <div className="text-xl font-bold text-foreground">
+                                    {formatUsd(userStats.collateralUsd)}
+                                </div>
+                            )}
                         </div>
                         <div className="space-y-1">
-                            <div className="text-sm text-muted-foreground">Address</div>
-                            <div className="font-mono text-sm font-medium text-text bg-gray-50 rounded-lg px-3 py-2 break-all">
-                                {address}
-                            </div>
+                            <div className="text-xs text-muted-foreground">Your Debt</div>
+                            {isLoading ? (
+                                <Skeleton className="h-6 w-20" />
+                            ) : (
+                                <div className="text-xl font-bold text-foreground">
+                                    {formatUsd(userStats.debtUsd)}
+                                </div>
+                            )}
                         </div>
-                        <a
-                            href={`https://etherscan.io/address/${address}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="mt-3 inline-flex items-center gap-1.5 text-xs text-blue-600 hover:text-blue-700 transition-colors"
-                        >
-                            View on Etherscan
-                            <ExternalLink className="h-3 w-3" />
-                        </a>
-                    </div>
-
-                    {/* Stats Placeholder */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        {[
-                            { label: "Collateral Deposited", value: "—" },
-                            { label: "USDC Borrowed", value: "—" },
-                            { label: "Health Factor", value: "—" },
-                        ].map((stat) => (
-                            <div key={stat.label} className="rounded-2xl border border-border bg-white p-6 shadow-sm">
-                                <div className="text-sm text-muted-foreground mb-1">{stat.label}</div>
-                                <div className="text-2xl font-bold text-text">{stat.value}</div>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* Coming Soon */}
-                    <div className="rounded-2xl border border-dashed border-border bg-gray-50/50 p-12 text-center">
-                        <div className="text-muted-foreground text-sm">
-                            Full DApp interface coming soon
+                        <div className="space-y-1">
+                            <div className="text-xs text-muted-foreground">Health Factor</div>
+                            {hfLoading ? (
+                                <Skeleton className="h-6 w-16" />
+                            ) : (
+                                <HealthFactorBadge value={healthFactor} className="mt-0.5" />
+                            )}
+                        </div>
+                        <div className="space-y-1">
+                            <div className="text-xs text-muted-foreground">Max Borrow</div>
+                            {isLoading ? (
+                                <Skeleton className="h-6 w-16" />
+                            ) : (
+                                <div className="text-xl font-bold text-foreground">
+                                    {formatUsd(userStats.maxBorrowUsd)}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
-            </main>
+
+                {/* Right — risk bar */}
+                <div className="flex flex-col justify-center space-y-3">
+                    <div className="text-xs text-muted-foreground uppercase tracking-widest font-medium">
+                        Risk Level
+                    </div>
+                    {hfLoading ? (
+                        <Skeleton className="h-4 w-full rounded-full" />
+                    ) : (
+                        <RiskBar
+                            collateralUsd={userStats.collateralUsd}
+                            debtUsd={userStats.debtUsd}
+                            healthFactor={healthFactor}
+                        />
+                    )}
+                    <p className="text-xs text-muted-foreground">
+                        Keep HF above 1.3 to avoid liquidation risk.
+                    </p>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+// ─── Page ────────────────────────────────────────────────────────────────────
+
+export default function DashboardPage() {
+    const { data: stats, isLoading } = useProtocolStats()
+
+    return (
+        <div className="p-6 space-y-6 max-w-5xl">
+            {/* Page title */}
+            <div>
+                <h1 className="text-xl font-bold text-foreground">Dashboard</h1>
+                <p className="text-sm text-muted-foreground mt-0.5">
+                    Protocol overview &amp; your position
+                </p>
+            </div>
+
+            {/* Protocol overview — 4 cards */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <StatCard
+                    label="Total Market Size"
+                    value={formatUsd(stats.tvl)}
+                    sub="Total Value Locked"
+                    icon={<DollarSign className="w-4 h-4" />}
+                    isLoading={isLoading}
+                />
+                <StatCard
+                    label="Total Supplied"
+                    value={formatUsd(stats.totalSupplied)}
+                    icon={<TrendingUp className="w-4 h-4" />}
+                    isLoading={isLoading}
+                />
+                <StatCard
+                    label="Total Borrowed"
+                    value={formatUsd(stats.totalBorrowed)}
+                    icon={<TrendingDown className="w-4 h-4" />}
+                    isLoading={isLoading}
+                />
+                <StatCard
+                    label="Utilization"
+                    value={formatPercent(stats.utilization)}
+                    sub={`${formatUsd(stats.totalBorrowed)} / ${formatUsd(stats.totalSupplied)}`}
+                    icon={<Activity className="w-4 h-4" />}
+                    isLoading={isLoading}
+                />
+            </div>
+
+            {/* User position */}
+            <UserPositionCard />
         </div>
     )
 }
