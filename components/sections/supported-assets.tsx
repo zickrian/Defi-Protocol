@@ -1,21 +1,42 @@
+"use client"
+
 import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
 import { Sparkline } from "@/components/visuals/sparkline";
 import { ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { AssetIcon } from "@/components/ui/asset-icon";
+import { useLivePrices } from "@/hooks/usePrices";
 
-const assets = [
-    { ticker: "USDC", name: "USD Coin", price: "1.00", change: "+0.0%", color: "green" },
-    { ticker: "ETH", name: "Ethereum", price: "3,420.00", change: "+2.1%", color: "green" },
-    { ticker: "BTC", name: "Bitcoin", price: "97,350.00", change: "+1.4%", color: "green" },
-    { ticker: "AMZN", name: "Synthetic Amazon", price: "186.40", change: "-0.8%", color: "red" },
-    { ticker: "AMD", name: "Synthetic AMD", price: "134.20", change: "+2.7%", color: "green" },
-    { ticker: "NFLX", name: "Synthetic Netflix", price: "712.50", change: "+1.5%", color: "green" },
-    { ticker: "PLTR", name: "Synthetic Palantir", price: "28.75", change: "+3.2%", color: "green" },
-    { ticker: "TSLA", name: "Synthetic Tesla", price: "243.10", change: "+4.2%", color: "green" },
-];
+const ASSET_LIST = [
+    { ticker: "USDC", name: "USD Coin" },
+    { ticker: "ETH",  name: "Ethereum" },
+    { ticker: "BTC",  name: "Bitcoin" },
+    { ticker: "AMZN", name: "Synthetic Amazon" },
+    { ticker: "AMD",  name: "Synthetic AMD" },
+    { ticker: "NFLX", name: "Synthetic Netflix" },
+    { ticker: "PLTR", name: "Synthetic Palantir" },
+    { ticker: "TSLA", name: "Synthetic Tesla" },
+]
+
+function formatPrice(price: number): string {
+    if (price >= 1_000) {
+        return price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+    }
+    return price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+}
 
 export function SupportedAssets() {
+    const { data: prices } = useLivePrices()
+
+    const assets = ASSET_LIST.map((a) => {
+        const live = prices?.[a.ticker]
+        return {
+            ...a,
+            price:  live?.price  ?? null,
+            change: live?.change ?? null,
+        }
+    })
+
     return (
         <section className="py-24 bg-white overflow-hidden">
             <Container>
@@ -40,38 +61,56 @@ export function SupportedAssets() {
                 <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-zinc-50 to-transparent z-10 pointer-events-none" />
 
                 <div className="flex gap-6 animate-scroll whitespace-nowrap py-4 px-6 w-max">
-                    {[...assets, ...assets].map((asset, i) => ( // Duplicate for infinite scroll
-                        <div
-                            key={`${asset.ticker}-${i}`}
-                            className="bg-white rounded-2xl border border-zinc-200 p-6 w-[280px] shadow-sm hover:shadow-md transition-shadow shrink-0"
-                        >
-                            <div className="flex justify-between items-start mb-4">
-                                <div className="flex items-center gap-3">
-                                    <AssetIcon symbol={asset.ticker} size={40} />
-                                    <div>
-                                        <div className="font-bold text-foreground">{asset.ticker}</div>
-                                        <div className="text-xs text-muted-foreground">{asset.name}</div>
-                                    </div>
-                                </div>
-                                <Badge variant="secondary" className="bg-zinc-100 text-zinc-600 border-zinc-200 font-normal">
-                                    RWA
-                                </Badge>
-                            </div>
+                    {[...assets, ...assets].map((asset, i) => {
+                        const isPositive = (asset.change ?? 0) >= 0
+                        const color = isPositive ? "green" : "red"
 
-                            <div className="flex justify-between items-end">
-                                <div>
-                                    <div className="text-2xl font-bold text-foreground">${asset.price}</div>
-                                    <div className={`text-sm font-medium flex items-center mt-1 ${asset.color === 'green' ? 'text-emerald-600' : 'text-red-500'}`}>
-                                        {asset.color === 'green' ? <ArrowUpRight className="h-3 w-3 mr-1" /> : <ArrowDownRight className="h-3 w-3 mr-1" />}
-                                        {asset.change}
+                        return (
+                            <div
+                                key={`${asset.ticker}-${i}`}
+                                className="bg-white rounded-2xl border border-zinc-200 p-6 w-[280px] shadow-sm hover:shadow-md transition-shadow shrink-0"
+                            >
+                                <div className="flex justify-between items-start mb-4">
+                                    <div className="flex items-center gap-3">
+                                        <AssetIcon symbol={asset.ticker} size={40} />
+                                        <div>
+                                            <div className="font-bold text-foreground">{asset.ticker}</div>
+                                            <div className="text-xs text-muted-foreground">{asset.name}</div>
+                                        </div>
+                                    </div>
+                                    <Badge variant="secondary" className="bg-zinc-100 text-zinc-600 border-zinc-200 font-normal">
+                                        RWA
+                                    </Badge>
+                                </div>
+
+                                <div className="flex justify-between items-end">
+                                    <div>
+                                        {asset.price !== null ? (
+                                            <div className="text-2xl font-bold text-foreground">
+                                                ${formatPrice(asset.price)}
+                                            </div>
+                                        ) : (
+                                            <div className="h-8 w-28 rounded bg-zinc-100 animate-pulse" />
+                                        )}
+                                        {asset.change !== null ? (
+                                            <div className={`text-sm font-medium flex items-center mt-1 ${isPositive ? "text-emerald-600" : "text-red-500"}`}>
+                                                {isPositive
+                                                    ? <ArrowUpRight className="h-3 w-3 mr-1" />
+                                                    : <ArrowDownRight className="h-3 w-3 mr-1" />
+                                                }
+                                                {isPositive ? "+" : ""}{asset.change.toFixed(2)}%
+                                            </div>
+                                        ) : (
+                                            <div className="h-4 w-16 rounded bg-zinc-100 animate-pulse mt-1" />
+                                        )}
+                                    </div>
+                                    <div className="w-24 h-12">
+                                        <Sparkline color={color as "green" | "red"} />
                                     </div>
                                 </div>
-                                <div className="w-24 h-12">
-                                    <Sparkline color={asset.color as "green" | "red"} />
-                                </div>
                             </div>
-                        </div>
-                    ))}
+                        )
+                    })}
                 </div>
             </div>
         </section>

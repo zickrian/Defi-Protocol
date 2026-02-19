@@ -1,15 +1,3 @@
-/**
- * useProtocol — protocol-level stats hook
- *
- * Currently returns mock data.
- * To connect to real contracts, replace the return value with:
- *
- *   const { data } = useReadContract({
- *     address: LENDING_POOL_ADDRESS,
- *     abi: LENDING_POOL_ABI,
- *     functionName: 'getProtocolStats',
- *   })
- */
 "use client"
 
 import { useState, useEffect } from 'react'
@@ -27,6 +15,7 @@ import {
     type UserBorrowPosition,
     type LiquidatablePosition,
 } from '@/lib/mock-data'
+import { useLivePrices } from '@/hooks/usePrices'
 
 // ─── Protocol stats ──────────────────────────────────────────────────────────
 
@@ -44,27 +33,25 @@ export function useProtocolStats(): { data: ProtocolStats; isLoading: boolean } 
 // ─── Markets ──────────────────────────────────────────────────────────────────
 
 export function useMarkets(): { data: MarketAsset[]; isLoading: boolean } {
-    const [isLoading, setIsLoading] = useState(true)
+    const { data: prices, isLoading } = useLivePrices()
 
-    useEffect(() => {
-        const timer = setTimeout(() => setIsLoading(false), 500)
-        return () => clearTimeout(timer)
-    }, [])
+    const data = MARKETS.map((market) => {
+        const live = prices?.[market.symbol]
+        return live ? { ...market, price: live.price } : market
+    })
 
-    return { data: MARKETS, isLoading }
+    return { data, isLoading }
 }
 
 // ─── Single market ────────────────────────────────────────────────────────────
 
 export function useMarket(symbol: string): { data: MarketAsset | undefined; isLoading: boolean } {
-    const [isLoading, setIsLoading] = useState(true)
+    const { data: prices, isLoading } = useLivePrices()
 
-    useEffect(() => {
-        const timer = setTimeout(() => setIsLoading(false), 300)
-        return () => clearTimeout(timer)
-    }, [])
+    const base = MARKETS.find((m) => m.symbol === symbol.toUpperCase())
+    const live = prices?.[symbol.toUpperCase()]
+    const data = base ? { ...base, ...(live ? { price: live.price } : {}) } : undefined
 
-    const data = MARKETS.find((m) => m.symbol === symbol.toUpperCase())
     return { data, isLoading }
 }
 
