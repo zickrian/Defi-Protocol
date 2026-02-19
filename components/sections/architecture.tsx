@@ -1,113 +1,94 @@
 "use client";
 
 import { Container } from "@/components/ui/container";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Database, ShieldCheck, Zap } from "lucide-react";
-import { FadeIn } from "@/components/animations/fade-in";
+import { ArrowRight, Box, Code2, Database, Shield } from "lucide-react";
+import Link from "next/link";
+import { motion } from "framer-motion";
 
 export function Architecture() {
     return (
-        <section id="architecture" className="py-24 bg-surface/50 border-b border-border">
+        <section className="bg-white py-24 border-b border-[#e6e6e6]" id="architecture">
             <Container>
-                <FadeIn>
-                    <div className="mb-16 text-center">
-                        <h2 className="text-3xl font-bold tracking-tight text-text sm:text-4xl">
-                            Native Collateral. Cross-Chain Liquidity.
-                        </h2>
-                        <p className="mt-4 text-lg text-gray-600">
-                            Seamlessly borrowing against your assets without bridging.
-                        </p>
-                    </div>
-                </FadeIn>
-
-                <FadeIn delay={0.2}>
-                    <div className="relative grid gap-8 lg:grid-cols-3">
-                        {/* Connector Line (Desktop) */}
-                        <div className="hidden lg:block absolute top-1/2 left-0 w-full -translate-y-1/2 px-12 -z-10">
-                            <svg className="w-full h-12 text-gray-300" preserveAspectRatio="none">
-                                <line x1="0" y1="50%" x2="100%" y2="50%" stroke="currentColor" strokeWidth="2" strokeDasharray="6 6" />
-                            </svg>
+                <div className="flex flex-col lg:flex-row gap-16 items-center">
+                    {/* Left: Text Content */}
+                    <div className="flex-1 max-w-xl">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f6f9fc] text-[#0066FF] text-sm font-semibold mb-6">
+                            <Box className="h-4 w-4" />
+                            Enterprise Grade Infrastructure
                         </div>
+                        
+                        <h2 className="text-[32px] md:text-[40px] font-bold leading-[1.1] text-black mb-6">
+                            Transform your DeFi strategy with agile financial infrastructure.
+                        </h2>
+                        
+                        <p className="text-lg leading-relaxed text-[#425466] mb-8">
+                            50% of Fortune 100 protocols have integrated Auno to manage cross-chain collateral and optimize yield strategies without fragmentation.
+                        </p>
 
-                        {/* Card 1: Robinhood Chain */}
-                        <Card className="bg-background relative z-10 border-border shadow-md">
-                            <CardHeader>
-                                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-surface border border-border">
-                                    <Database className="h-6 w-6 text-primary" />
-                                </div>
-                                <CardTitle>Robinhood Chain</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <ul className="space-y-3 text-sm text-gray-600">
-                                    <li className="flex items-start">
-                                        <span className="mr-2 text-primary">•</span>
-                                        Tokenized Equities (TSLA, AMZN)
-                                    </li>
-                                    <li className="flex items-start">
-                                        <span className="mr-2 text-primary">•</span>
-                                        Native Custody
-                                    </li>
-                                    <li className="flex items-start">
-                                        <span className="mr-2 text-primary">•</span>
-                                        No Bridging Risk
-                                    </li>
-                                </ul>
-                            </CardContent>
-                        </Card>
+                        <Link 
+                            href="#" 
+                            className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0066FF] px-6 py-3 text-[15px] font-semibold text-white transition-all hover:bg-[#0052cc] active:scale-[0.98]"
+                        >
+                            Start building <ArrowRight className="h-4 w-4" />
+                        </Link>
 
-                        {/* Card 2: Oracle & Risk Engine */}
-                        <Card className="bg-background relative z-10 border-border shadow-md">
-                            <CardHeader>
-                                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-surface border border-border">
-                                    <ShieldCheck className="h-6 w-6 text-primary" />
-                                </div>
-                                <CardTitle>Oracle & Risk Engine</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <ul className="space-y-3 text-sm text-gray-600">
-                                    <li className="flex items-start">
-                                        <span className="mr-2 text-primary">•</span>
-                                        Real-time Price Feeds
-                                    </li>
-                                    <li className="flex items-start">
-                                        <span className="mr-2 text-primary">•</span>
-                                        Cross-Chain Messaging
-                                    </li>
-                                    <li className="flex items-start">
-                                        <span className="mr-2 text-primary">•</span>
-                                        Health Factor Monitoring
-                                    </li>
-                                </ul>
-                            </CardContent>
-                        </Card>
-
-                        {/* Card 3: Arbitrum */}
-                        <Card className="bg-background relative z-10 border-border shadow-md">
-                            <CardHeader>
-                                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-surface border border-border">
-                                    <Zap className="h-6 w-6 text-primary" />
-                                </div>
-                                <CardTitle>Arbitrum</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <ul className="space-y-3 text-sm text-gray-600">
-                                    <li className="flex items-start">
-                                        <span className="mr-2 text-primary">•</span>
-                                        USDC / ETH Liquidity
-                                    </li>
-                                    <li className="flex items-start">
-                                        <span className="mr-2 text-primary">•</span>
-                                        Instant Execution
-                                    </li>
-                                    <li className="flex items-start">
-                                        <span className="mr-2 text-primary">•</span>
-                                        Low Gas Fees
-                                    </li>
-                                </ul>
-                            </CardContent>
-                        </Card>
+                        {/* Stats */}
+                        <div className="mt-12 grid grid-cols-2 gap-8 border-t border-[#e6e6e6] pt-8">
+                            <div>
+                                <div className="text-2xl font-bold text-black mb-1">160+</div>
+                                <div className="text-sm font-medium text-[#425466]">Supported Chains</div>
+                            </div>
+                            <div>
+                                <div className="text-2xl font-bold text-black mb-1">99.99%</div>
+                                <div className="text-sm font-medium text-[#425466]">Uptime SLA</div>
+                            </div>
+                        </div>
                     </div>
-                </FadeIn>
+
+                    {/* Right: Visual (Stripe-style abstract UI) */}
+                    <div className="flex-1 w-full">
+                        <motion.div 
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.8 }}
+                            className="relative aspect-[4/3] rounded-xl overflow-hidden bg-[#f6f9fc] border border-[#e6e6e6]"
+                        >
+                            {/* Abstract Geometric Shapes simulating a dashboard or network */}
+                            <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-50"></div>
+                            
+                            {/* Floating Card 1 */}
+                            <div className="absolute top-[15%] left-[10%] w-[60%] bg-white rounded-lg shadow-lg border border-[#e6e6e6] p-6 z-10">
+                                <div className="flex items-center gap-4 mb-4">
+                                    <div className="h-10 w-10 bg-[#0066FF] rounded-lg flex items-center justify-center">
+                                        <Database className="text-white h-5 w-5" />
+                                    </div>
+                                    <div>
+                                        <div className="h-2 w-24 bg-[#f6f9fc] rounded mb-2"></div>
+                                        <div className="h-2 w-16 bg-[#f6f9fc] rounded"></div>
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <div className="h-2 w-full bg-[#f6f9fc] rounded"></div>
+                                    <div className="h-2 w-[80%] bg-[#f6f9fc] rounded"></div>
+                                </div>
+                            </div>
+
+                            {/* Floating Card 2 */}
+                            <div className="absolute bottom-[15%] right-[10%] w-[55%] bg-white rounded-lg shadow-lg border border-[#e6e6e6] p-6 z-20">
+                                <div className="flex justify-between items-center mb-4">
+                                    <div className="h-2 w-20 bg-[#f6f9fc] rounded"></div>
+                                    <div className="h-4 w-4 bg-[#0066FF] rounded-full"></div>
+                                </div>
+                                <div className="flex gap-2 items-end h-16">
+                                    <div className="flex-1 bg-[#0066FF] opacity-20 h-[40%] rounded-t"></div>
+                                    <div className="flex-1 bg-[#0066FF] opacity-40 h-[70%] rounded-t"></div>
+                                    <div className="flex-1 bg-[#0066FF] opacity-60 h-[50%] rounded-t"></div>
+                                    <div className="flex-1 bg-[#0066FF] h-[90%] rounded-t"></div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </div>
+                </div>
             </Container>
         </section>
     );

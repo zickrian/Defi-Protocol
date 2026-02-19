@@ -1,119 +1,170 @@
 "use client";
 
 import { Container } from "@/components/ui/container";
-import { Button } from "@/components/ui/button";
-import { Globe } from "@/components/ui/globe";
 import { ArrowRight } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 import { AssetIcon } from "@/components/ui/asset-icon";
+import { useLivePrices } from "@/hooks/usePrices";
+import { useEffect, useState } from "react";
+import { Globe } from "@/components/ui/globe";
+
+const ASSET_LIST = [
+    { ticker: "USDC", name: "USD Coin" },
+    { ticker: "ETH",  name: "Ethereum" },
+    { ticker: "BTC",  name: "Bitcoin" },
+    { ticker: "AMZN", name: "Amazon" },
+    { ticker: "AMD",  name: "AMD" },
+    { ticker: "NFLX", name: "Netflix" },
+    { ticker: "PLTR", name: "Palantir" },
+    { ticker: "TSLA", name: "Tesla" },
+];
+
+function formatPrice(price: number): string {
+    return price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
 
 export function Hero() {
-    return (
-        <section className="relative overflow-hidden pt-12 pb-8 lg:pt-20 lg:pb-12 bg-background">
-            {/* Background Pattern */}
-            <div className="absolute inset-0 -z-10 h-full w-full bg-dot-pattern opacity-50" />
-            <div className="absolute inset-0 -z-10 h-full w-full bg-gradient-to-b from-transparent via-background/50 to-background" />
+    const { data: prices, isLoading, error, dataUpdatedAt, isFetching } = useLivePrices();
+    const [prevPrices, setPrevPrices] = useState<Record<string, number>>({});
 
+    // Track price changes for animation - update whenever prices change
+    useEffect(() => {
+        if (prices) {
+            setPrevPrices((prev) => {
+                const newPrev: Record<string, number> = {};
+                Object.entries(prices).forEach(([ticker, entry]) => {
+                    newPrev[ticker] = entry.price;
+                });
+                return newPrev;
+            });
+        }
+    }, [prices, dataUpdatedAt]);
+
+    const assets = ASSET_LIST.map((a) => {
+        const live = prices?.[a.ticker];
+        const prevPrice = prevPrices[a.ticker];
+        const priceChanged = live && prevPrice && Math.abs(live.price - prevPrice) > 0.01;
+        
+        return {
+            ...a,
+            price:  live?.price  ?? null,
+            change: live?.change ?? null,
+            priceChanged: priceChanged || false,
+        };
+    }).filter(asset => asset.price !== null && asset.price > 0); // Only show assets with valid prices
+
+    return (
+        <section className="relative overflow-hidden bg-white pt-20 pb-16 lg:pt-32 lg:pb-24">
             <Container>
-                <div className="grid gap-16 lg:grid-cols-2 lg:gap-24 items-center">
-                    {/* Left Content */}
-                    <div className="space-y-8 relative z-10">
-                        <motion.div
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                    {/* Left side - Content */}
+                    <div className="text-left">
+                        <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, ease: "easeOut" }}
+                            className="text-[clamp(2.45rem,4.9vw,4.55rem)] font-bold leading-[1.0] tracking-tight text-black"
                         >
-
-                            <h1 className="text-5xl font-extrabold tracking-tight text-text sm:text-7xl leading-[1.1]">
-                                Borrow Without <br className="hidden sm:block" />
-                                <span className="text-foreground">
-                                    Moving Your Stocks
-                                </span>
-                            </h1>
-                        </motion.div>
+                            Borrow without<br />moving your stocks.
+                        </motion.h1>
 
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-                            className="text-xl text-gray-600 leading-relaxed max-w-lg"
+                            className="mt-8 text-[22px] leading-[1.4] text-black max-w-[800px]"
                         >
-                            Keep your tokenized equities native on Robinhood Chain. Borrow USDC on Arbitrum. <span className="font-semibold text-text">Zero bridging risk.</span>
+                            Keep your tokenized equities native on Robinhood Chain. Borrow USDC on Arbitrum.{" "}
+                            <span className="font-bold">Zero bridging risk.</span>
                         </motion.p>
 
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-                            className="flex flex-wrap gap-4"
+                            className="mt-10 flex flex-wrap justify-start gap-4"
                         >
-                            <Button
-                                size="lg"
-                                className="rounded-full px-8 h-12 text-base shadow-lg shadow-black/5 hover:shadow-black/10 transition-all bg-black text-white hover:bg-gray-800"
+                            <Link
+                                href="#protocol"
+                                className="inline-flex items-center gap-2 rounded-md bg-[#0066FF] px-6 py-3 text-base font-semibold text-white transition-all hover:bg-[#0052cc] active:scale-[0.98]"
                             >
-                                Learn more <ArrowRight className="ml-2 h-4 w-4" />
-                            </Button>
-                            <Button
-                                variant="outline"
-                                size="lg"
-                                className="rounded-full px-8 h-12 text-base bg-white/50 backdrop-blur-sm hover:bg-white text-foreground border-border"
+                                Get started <ArrowRight className="h-4 w-4" />
+                            </Link>
+                            <Link
+                                href="#developers"
+                                className="inline-flex items-center gap-2 rounded-md border border-[#e6e6e6] bg-white px-6 py-3 text-base font-semibold text-black transition-all hover:border-[#cccccc] active:scale-[0.98]"
                             >
-                                Read Documentation
-                            </Button>
-                        </motion.div>
-
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 1, delay: 0.5 }}
-                            className="pt-8 border-t border-border/50 flex gap-12"
-                        >
-                            <div>
-                                <div className="text-3xl font-bold text-text tracking-tight">$142M+</div>
-                                <div className="text-sm font-medium text-gray-500 mt-1">Total Value Locked</div>
-                            </div>
-                            <div>
-                                <div className="text-3xl font-bold text-text tracking-tight">0%</div>
-                                <div className="text-sm font-medium text-gray-500 mt-1">Bridge Hack Risk</div>
-                            </div>
+                                Read Documentation <ArrowRight className="h-4 w-4" />
+                            </Link>
                         </motion.div>
                     </div>
 
-                    {/* Right Visual (Globe) */}
-                    <div className="relative h-[500px] w-full flex items-center justify-center">
-                        <div className="absolute inset-0 bg-primary/5 blur-[100px] rounded-full -z-10" />
-                        <Globe className="w-full max-w-[600px] h-full" />
-
-                        {/* Floating Card: TSLA on Robinhood */}
+                    {/* Right side - Globe */}
+                    <div className="hidden lg:flex items-center justify-center relative h-[600px]">
                         <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 1, duration: 0.8 }}
-                            className="absolute bottom-10 left-0 md:left-10 bg-white/80 backdrop-blur-md shadow-xl border-white/20 p-4 rounded-xl ring-1 ring-black/5 z-20"
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+                            className="relative w-full h-full"
                         >
-                            <div className="flex items-center gap-3">
-                                <AssetIcon symbol="TSLA" size={40} />
-                                <div>
-                                    <div className="font-bold text-sm text-foreground">Tesla Inc.</div>
-                                    <div className="text-xs text-emerald-600">+2.4% Native</div>
-                                </div>
-                            </div>
-                        </motion.div>
-
-                        {/* Floating Card: Cross-Chain Liquidity */}
-                        <motion.div
-                            initial={{ opacity: 0, y: -20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 1.2, duration: 0.8 }}
-                            className="absolute top-10 right-0 md:right-10 bg-white/80 backdrop-blur-md shadow-xl border-white/20 p-4 rounded-xl ring-1 ring-black/5 z-20"
-                        >
-                            <div className="text-xs text-muted-foreground mb-1">Borrow Capacity</div>
-                            <div className="text-lg font-bold text-foreground">$140,000</div>
-                            <div className="text-[10px] text-muted-foreground">USDC on Arbitrum</div>
+                            <Globe />
                         </motion.div>
                     </div>
                 </div>
             </Container>
+
+            {/* Price Marquee (Customer logos equivalent) - Stripe style separator */}
+            <div className="mt-24 bg-white">
+                <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+                    {/* Content area */}
+                    <div className="relative w-full overflow-hidden py-8">
+                        {error ? (
+                            <div className="text-center py-4 text-sm text-[#425466]">
+                                Unable to load prices. Please refresh the page.
+                            </div>
+                        ) : (
+                            <>
+                                {isLoading && !prices ? (
+                                    <div className="text-center py-4 text-sm text-[#425466]">
+                                        Loading prices...
+                                    </div>
+                                ) : assets.length === 0 ? (
+                                    <div className="text-center py-4 text-sm text-[#425466]">
+                                        No prices available
+                                    </div>
+                                ) : (
+                                    <div className="flex gap-16 animate-marquee whitespace-nowrap items-center" style={{ width: 'max-content' }}>
+                                        {[...assets, ...assets, ...assets].map((asset, i) => {
+                                            return (
+                                                <div
+                                                    key={`${asset.ticker}-${i}`}
+                                                    className="flex items-center gap-3 shrink-0 select-none opacity-60 hover:opacity-100 transition-opacity duration-300"
+                                                    style={{ willChange: 'transform' }}
+                                                >
+                                                    <AssetIcon symbol={asset.ticker} size={32} />
+                                                    <div className="flex flex-col justify-center">
+                                                        <span className="text-sm font-bold text-black">{asset.ticker}</span>
+                                                        {asset.price !== null && asset.price > 0 ? (
+                                                            <span className={`text-sm font-semibold tabular-nums transition-colors duration-300 ${
+                                                                asset.priceChanged ? 'text-[#0066FF]' : 'text-black'
+                                                            }`}>
+                                                                ${formatPrice(asset.price)}
+                                                            </span>
+                                                        ) : (
+                                                            <span className="h-4 w-16 rounded bg-[#e6e6e6] animate-pulse block mt-1" />
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+                            </>
+                        )}
+                    </div>
+                </div>
+            </div>
         </section>
     );
 }

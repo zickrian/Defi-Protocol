@@ -1,69 +1,145 @@
 import { NextResponse } from "next/server"
 
-// Maps our app symbols → Yahoo Finance symbols
-const YAHOO_SYMBOL_MAP: Record<string, string> = {
-    BTC:  "BTC-USD",
-    ETH:  "ETH-USD",
-    USDC: "USDC-USD",
-    TSLA: "TSLA",
-    AMZN: "AMZN",
-    PLTR: "PLTR",
-    NFLX: "NFLX",
-    AMD:  "AMD",
-}
+// Force dynamic rendering - no caching
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export interface PriceEntry {
     price:  number
     change: number  // % change today
 }
 
-export async function GET() {
-    try {
-        const yahooSymbols = Object.values(YAHOO_SYMBOL_MAP).join(",")
-        const url =
-            `https://query1.finance.yahoo.com/v8/finance/quote` +
-            `?symbols=${yahooSymbols}` +
-            `&fields=regularMarketPrice,regularMarketChangePercent`
+// CoinGecko IDs for crypto
+const COINGECKO_IDS: Record<string, string> = {
+    BTC: "bitcoin",
+    ETH: "ethereum",
+    USDC: "usd-coin",
+}
 
+// Stock symbols
+const STOCK_SYMBOLS = ["TSLA", "AMZN", "AMD", "NFLX", "PLTR"];
+
+async function fetchCryptoPrices(): Promise<Record<string, PriceEntry>> {
+    const prices: Record<string, PriceEntry> = {};
+    
+    try {
+        const ids = Object.values(COINGECKO_IDS).join(",");
+        const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`;
+        
         const res = await fetch(url, {
+            cache: "no-store",
             headers: {
-                "User-Agent":
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-                Accept: "application/json",
+                "Accept": "application/json",
             },
-            // Server-side cache: refresh every 30s
-            next: { revalidate: 30 },
-        })
+        });
 
         if (!res.ok) {
-            throw new Error(`Yahoo Finance responded with HTTP ${res.status}`)
+            throw new Error(`CoinGecko API error: ${res.status}`);
         }
 
-        const json = await res.json()
-        const quotes: Array<{ symbol: string; regularMarketPrice?: number; regularMarketChangePercent?: number }> = json?.quoteResponse?.result ?? []
+        const data = await res.json();
 
-        const prices: Record<string, PriceEntry> = {}
-
-        for (const [appSymbol, yahooSymbol] of Object.entries(YAHOO_SYMBOL_MAP)) {
-            const quote = quotes.find((q) => q.symbol === yahooSymbol)
-            if (quote) {
-                prices[appSymbol] = {
-                    price:  quote.regularMarketPrice  ?? 0,
-                    change: quote.regularMarketChangePercent ?? 0,
-                }
+        // Map CoinGecko response to our format - ONLY use real data
+        for (const [symbol, coinId] of Object.entries(COINGECKO_IDS)) {
+            const coinData = data[coinId];
+            if (coinData && coinData.usd && typeof coinData.usd === 'number') {
+                prices[symbol] = {
+                    price: coinData.usd,
+                    change: coinData.usd_24h_change || 0,
+                };
             }
         }
+    } catch (err) {
+        console.error("[/api/prices] CoinGecko fetch failed:", err);
+        // Don't return fallback - return empty object
+    }
 
+    return prices;
+}
+
+async function fetchStockPrices(): Promise<Record<string, PriceEntry>> {
+    const prices: Record<string, PriceEntry> = {};
+    
+    // Fetch stocks from Yahoo Finance - REAL prices only
+    for (const symbol of STOCK_SYMBOLS) {
+        try {
+            const yahooUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=1d`;
+            
+            const res = await fetch(yahooUrl, {
+                cache: "no-store",
+                headers: {
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                    "Accept": "application/json",
+                },
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                const result = data?.chart?.result?.[0];
+                
+                if (result) {
+                    const currentPrice = result.meta?.regularMarketPrice;
+                    const previousClose = result.meta?.previousClose;
+                    
+                    // ONLY use if we have valid real data
+                    if (currentPrice && typeof currentPrice === 'number' && currentPrice > 0) {
+                        const changePercent = previousClose 
+                            ? ((currentPrice - previousClose) / previousClose) * 100 
+                            : 0;
+                        
+                        prices[symbol] = {
+                            price: currentPrice,
+                            change: changePercent,
+                        };
+                    }
+                }
+            }
+        } catch (err) {
+            console.warn(`[/api/prices] Failed to fetch ${symbol} from Yahoo Finance:`, err);
+            // Don't add fallback - skip this symbol
+        }
+    }
+    
+    return prices;
+}
+
+export async function GET(request: Request) {
+    try {
+        const timestamp = Date.now();
+        const prices: Record<string, PriceEntry> = {};
+
+        // Fetch crypto prices from CoinGecko (REAL-TIME ONLY)
+        const cryptoPrices = await fetchCryptoPrices();
+        Object.assign(prices, cryptoPrices);
+
+        // Fetch stock prices from Yahoo Finance (REAL-TIME ONLY)
+        const stockPrices = await fetchStockPrices();
+        Object.assign(prices, stockPrices);
+
+        // Log untuk debugging - show what we actually got
+        console.log(`[API] REAL prices fetched at ${new Date(timestamp).toISOString()}`);
+        console.log(`[API] Symbols received:`, Object.keys(prices));
+        console.log(`[API] BTC: $${prices.BTC?.price}, ETH: $${prices.ETH?.price}, TSLA: $${prices.TSLA?.price}`);
+
+        // Return ONLY real prices - no fallbacks, no fake data
         return NextResponse.json(prices, {
             headers: {
-                "Cache-Control": "s-maxage=30, stale-while-revalidate=60",
+                "Cache-Control": "no-store, must-revalidate, max-age=0",
+                "Pragma": "no-cache",
+                "Expires": "0",
+                "X-Data-Timestamp": timestamp.toString(),
             },
-        })
+        });
     } catch (err) {
-        console.error("[/api/prices]", err)
-        return NextResponse.json(
-            { error: "Failed to fetch prices from Yahoo Finance" },
-            { status: 500 },
-        )
+        console.error("[/api/prices] Error:", err);
+        // Return empty object if everything fails - NO FAKE DATA
+        return NextResponse.json({}, {
+            status: 500,
+            headers: {
+                "Cache-Control": "no-store, must-revalidate, max-age=0",
+                "Pragma": "no-cache",
+                "Expires": "0",
+            },
+        });
     }
 }

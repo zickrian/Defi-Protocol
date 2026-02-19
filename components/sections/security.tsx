@@ -1,53 +1,94 @@
+"use client";
+
 import { Container } from "@/components/ui/container";
-import { SecurityVisual } from "@/components/visuals/security-visual";
-import { FileCheck, Shield, Lock, Eye } from "lucide-react";
+import { ArrowRight, CheckCircle2, Lock, Smartphone, Terminal } from "lucide-react";
+import { motion } from "framer-motion";
 
 export function Security() {
     return (
-        <section className="py-24 bg-white relative">
+        <section className="bg-[#0066FF] py-24 text-white overflow-hidden" id="security">
             <Container>
-                <div className="grid lg:grid-cols-2 gap-16 items-center">
-                    {/* Left Column: Visual */}
-                    <div className="relative order-2 lg:order-1">
-                        <div className="absolute -inset-4 bg-gradient-to-br from-emerald-500/10 to-blue-500/10 rounded-full blur-3xl -z-10" />
-                        <SecurityVisual />
-                    </div>
-
-                    {/* Right Column: Content */}
-                    <div className="order-1 lg:order-2">
-                        <div className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-800 mb-6">
-                            <Shield className="mr-2 h-4 w-4" />
-                            Bank-Grade Security
-                        </div>
-                        <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl mb-6">
-                            Fortified Architecture <br />
-                            <span className="text-muted-foreground">Audited & Verified</span>
+                <div className="flex flex-col lg:flex-row gap-20">
+                    {/* Left: Content */}
+                    <div className="flex-1 max-w-xl pt-8">
+                        <h2 className="text-[32px] md:text-[40px] font-bold leading-[1.1] mb-6 text-white">
+                            The backbone for DeFi lending.
                         </h2>
-                        <p className="text-lg text-muted-foreground mb-12 leading-relaxed">
-                            We prioritize fund safety above all else. Our codebase undergoes rigorous audits and formally verified proofs.
+                        <p className="text-lg leading-relaxed text-blue-100 mb-12">
+                            For ambitious protocols around the world, Auno makes cross-chain lending as simple, borderless, and programmable as the rest of DeFi.
                         </p>
 
-                        <div className="grid gap-6 sm:grid-cols-2">
-                            <div className="group p-6 rounded-2xl border border-border hover:border-black transition-colors bg-white hover:shadow-lg">
-                                <div className="h-10 w-10 rounded-lg bg-gray-100 flex items-center justify-center mb-4 group-hover:bg-black group-hover:text-white transition-colors">
-                                    <FileCheck className="h-5 w-5" />
+                        <div className="grid gap-10">
+                            <div className="flex gap-4">
+                                <div className="shrink-0 mt-1">
+                                    <Terminal className="h-6 w-6 text-white" />
                                 </div>
-                                <h3 className="font-bold text-foreground mb-2">Smart Contract Audits</h3>
-                                <p className="text-sm text-muted-foreground">
-                                    Audited by OpenZeppelin and Trail of Bits. Zero critical vulnerabilities found.
-                                </p>
+                                <div>
+                                    <h3 className="text-lg font-bold mb-2">Developer-centric</h3>
+                                    <p className="text-blue-100 leading-relaxed">
+                                        Rapidly build production-ready lending integrations with modern tools, from React components to real-time on-chain events and webhooks.
+                                    </p>
+                                </div>
                             </div>
 
-                            <div className="group p-6 rounded-2xl border border-border hover:border-black transition-colors bg-white hover:shadow-lg">
-                                <div className="h-10 w-10 rounded-lg bg-gray-100 flex items-center justify-center mb-4 group-hover:bg-black group-hover:text-white transition-colors">
-                                    <Eye className="h-5 w-5" />
+                            <div className="flex gap-4">
+                                <div className="shrink-0 mt-1">
+                                    <Lock className="h-6 w-6 text-white" />
                                 </div>
-                                <h3 className="font-bold text-foreground mb-2">Real-Time Monitoring</h3>
-                                <p className="text-sm text-muted-foreground">
-                                    24/7 on-chain monitoring for suspicious activity and flash loan attacks.
-                                </p>
+                                <div>
+                                    <h3 className="text-lg font-bold mb-2">Battle-tested reliability</h3>
+                                    <p className="text-blue-100 leading-relaxed">
+                                        Our systems operate with 99.99%+ uptime and are highly scalable and redundant. Auno is certified to the highest compliance standards.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="flex gap-4">
+                                <div className="shrink-0 mt-1">
+                                    <Smartphone className="h-6 w-6 text-white" />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-bold mb-2">Intelligent risk management</h3>
+                                    <p className="text-blue-100 leading-relaxed">
+                                        Our risk engine analyzes billions of on-chain data points to optimize collateral ratios, prevent liquidations, and maximize capital efficiency across all chains.
+                                    </p>
+                                </div>
                             </div>
                         </div>
+                    </div>
+
+                    {/* Right: Code Visual (matches Stripe's dark terminal look) */}
+                    <div className="flex-1 w-full lg:translate-x-12">
+                        <motion.div 
+                            initial={{ opacity: 0, x: 20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8 }}
+                            className="bg-[#0a2540] rounded-xl shadow-2xl overflow-hidden border border-[#ffffff]/10"
+                        >
+                            {/* Terminal Header */}
+                            <div className="flex items-center gap-2 px-4 py-3 border-b border-[#ffffff]/10 bg-[#0a2540]">
+                                <div className="h-3 w-3 rounded-full bg-[#ff5f57]"></div>
+                                <div className="h-3 w-3 rounded-full bg-[#febc2e]"></div>
+                                <div className="h-3 w-3 rounded-full bg-[#28c840]"></div>
+                                <div className="ml-4 text-xs font-mono text-gray-400">bash — 80x24</div>
+                            </div>
+                            
+                            {/* Code Content */}
+                            <div className="p-6 font-mono text-sm leading-relaxed overflow-x-auto">
+                                <div className="text-blue-300">import <span className="text-white">{'{'}</span> <span className="text-white">Auno</span> <span className="text-white">{'}'}</span> from <span className="text-green-300">'@auno/sdk'</span>;</div>
+                                <div className="mt-4 text-gray-400">// Initialize the client</div>
+                                <div className="text-white">const <span className="text-yellow-300">auno</span> = <span className="text-blue-300">new</span> Auno({'{'}</div>
+                                <div className="pl-4 text-white">chainId: <span className="text-purple-300">42161</span>, <span className="text-gray-400">// Arbitrum</span></div>
+                                <div className="text-white">{'}'});</div>
+                                <div className="mt-4 text-gray-400">// Borrow USDC against tokenized equity</div>
+                                <div className="text-white">const <span className="text-yellow-300">tx</span> = <span className="text-blue-300">await</span> auno.borrow({'{'}</div>
+                                <div className="pl-4 text-white">collateral: <span className="text-green-300">'TSLA'</span>,</div>
+                                <div className="pl-4 text-white">amount: <span className="text-green-300">'10000'</span>, <span className="text-gray-400">// USDC</span></div>
+                                <div className="pl-4 text-white">chain: <span className="text-green-300">'arbitrum'</span>,</div>
+                                <div className="text-white">{'}'});</div>
+                                <div className="mt-4 text-green-400">➜  ~  Transaction confirmed on Arbitrum...</div>
+                            </div>
+                        </motion.div>
                     </div>
                 </div>
             </Container>
