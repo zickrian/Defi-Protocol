@@ -21,10 +21,8 @@ export function useWallet() {
     const { disconnect } = useDisconnect()
 
     const handleConnect = useCallback(() => {
-        if (isConnected) {
-            disconnect()
-            return
-        }
+        // If already connected, do nothing — UI handles the dropdown
+        if (isConnected) return
 
         // Cek apakah MetaMask terinstall di browser
         if (typeof window === 'undefined') return
@@ -42,7 +40,7 @@ export function useWallet() {
         if (!connector) return
 
         connect({ connector })
-    }, [isConnected, connectors, connect, disconnect])
+    }, [isConnected, connectors, connect])
 
     // Format address untuk display: ENS name atau short address
     const displayAddress = ensName ?? (address ? `${address.slice(0, 6)}...${address.slice(-4)}` : null)
