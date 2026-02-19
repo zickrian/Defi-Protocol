@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Globe } from "@/components/ui/globe";
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { AssetIcon } from "@/components/ui/asset-icon";
 
 export function Hero() {
     return (
@@ -91,9 +92,7 @@ export function Hero() {
                             className="absolute bottom-10 left-0 md:left-10 bg-white/80 backdrop-blur-md shadow-xl border-white/20 p-4 rounded-xl ring-1 ring-black/5 z-20"
                         >
                             <div className="flex items-center gap-3">
-                                <div className="h-10 w-10 bg-black/5 rounded-full flex items-center justify-center">
-                                    <span className="font-bold text-foreground">TSLA</span>
-                                </div>
+                                <AssetIcon symbol="TSLA" size={40} />
                                 <div>
                                     <div className="font-bold text-sm text-foreground">Tesla Inc.</div>
                                     <div className="text-xs text-emerald-600">+2.4% Native</div>

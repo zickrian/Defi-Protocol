@@ -1,17 +1,18 @@
 import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
 import { Sparkline } from "@/components/visuals/sparkline";
-import { ArrowUpRight, ArrowDownRight, Circle } from "lucide-react";
+import { ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { AssetIcon } from "@/components/ui/asset-icon";
 
 const assets = [
-    { ticker: "TSLA", name: "Tesla Inc.", price: "248.50", change: "+4.2%", color: "green" },
-    { ticker: "NVDA", name: "NVIDIA Corp.", price: "875.24", change: "+1.8%", color: "green" },
-    { ticker: "AAPL", name: "Apple Inc.", price: "182.10", change: "+0.5%", color: "green" },
-    { ticker: "AMZN", name: "Amazon.com", price: "174.42", change: "-0.8%", color: "red" },
-    { ticker: "MSFT", name: "Microsoft", price: "402.12", change: "+1.1%", color: "green" },
-    { ticker: "COIN", name: "Coinbase", price: "245.80", change: "+8.5%", color: "green" },
-    { ticker: "MSTR", name: "MicroStrategy", price: "1850.50", change: "+12.2%", color: "green" },
-    { ticker: "GOOGL", name: "Alphabet Inc.", price: "135.20", change: "-1.2%", color: "red" },
+    { ticker: "USDC", name: "USD Coin", price: "1.00", change: "+0.0%", color: "green" },
+    { ticker: "ETH", name: "Ethereum", price: "3,420.00", change: "+2.1%", color: "green" },
+    { ticker: "BTC", name: "Bitcoin", price: "97,350.00", change: "+1.4%", color: "green" },
+    { ticker: "AMZN", name: "Synthetic Amazon", price: "186.40", change: "-0.8%", color: "red" },
+    { ticker: "AMD", name: "Synthetic AMD", price: "134.20", change: "+2.7%", color: "green" },
+    { ticker: "NFLX", name: "Synthetic Netflix", price: "712.50", change: "+1.5%", color: "green" },
+    { ticker: "PLTR", name: "Synthetic Palantir", price: "28.75", change: "+3.2%", color: "green" },
+    { ticker: "TSLA", name: "Synthetic Tesla", price: "243.10", change: "+4.2%", color: "green" },
 ];
 
 export function SupportedAssets() {
@@ -46,9 +47,7 @@ export function SupportedAssets() {
                         >
                             <div className="flex justify-between items-start mb-4">
                                 <div className="flex items-center gap-3">
-                                    <div className="h-10 w-10 bg-zinc-100 rounded-full flex items-center justify-center font-bold text-zinc-700">
-                                        {asset.ticker[0]}
-                                    </div>
+                                    <AssetIcon symbol={asset.ticker} size={40} />
                                     <div>
                                         <div className="font-bold text-foreground">{asset.ticker}</div>
                                         <div className="text-xs text-muted-foreground">{asset.name}</div>
