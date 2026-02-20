@@ -94,12 +94,12 @@ function BalanceHeader({ symbol }: { symbol: string }) {
                 )}
             </div>
             <div className="flex items-center gap-4">
-                <button className="flex items-center gap-1.5 text-[13px] text-gray-500 hover:text-gray-800 transition-colors">
-                    <span className="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center text-[10px] text-gray-400">+</span>
+                <button className="flex items-center gap-2 text-[15px] font-medium text-gray-600 hover:text-gray-900 transition-colors">
+                    <span className="w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-[12px] text-gray-500">+</span>
                     Supply {symbol}
                 </button>
-                <button className="flex items-center gap-1.5 text-[13px] text-gray-500 hover:text-gray-800 transition-colors">
-                    <span className="w-4 h-4 rounded-full border border-gray-300 flex items-center justify-center text-[10px] text-gray-400">–</span>
+                <button className="flex items-center gap-2 text-[15px] font-medium text-gray-600 hover:text-gray-900 transition-colors">
+                    <span className="w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center text-[12px] text-gray-500">–</span>
                     Borrow {symbol}
                 </button>
             </div>
@@ -142,7 +142,7 @@ function CollateralAssetsCard() {
             {/* Header row */}
             <div className="flex items-center justify-between pb-3 mb-1">
                 <span className="text-[11px] font-medium text-gray-400 tracking-wide">Collateral Asset</span>
-                <span className="text-[11px] font-medium text-gray-400 tracking-wide pr-24">Protocol Balance</span>
+                <span className="text-[11px] font-medium text-gray-400 tracking-wide w-24 text-right">Protocol Balance</span>
             </div>
 
             {/* Asset rows */}

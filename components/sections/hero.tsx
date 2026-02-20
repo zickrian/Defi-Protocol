@@ -60,44 +60,44 @@ export function Hero() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                     {/* Left side - Content */}
                     <div className="text-left">
-                        <motion.h1
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, ease: "easeOut" }}
+                    <motion.h1
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, ease: "easeOut" }}
                             className="text-[clamp(2.45rem,4.9vw,4.55rem)] font-bold leading-[1.0] tracking-tight text-black"
-                        >
+                    >
                             Borrow without<br />moving your stocks.
-                        </motion.h1>
+                    </motion.h1>
 
-                        <motion.p
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
                             className="mt-8 text-[22px] leading-[1.4] text-black max-w-[800px]"
-                        >
-                            Keep your tokenized equities native on Robinhood Chain. Borrow USDC on Arbitrum.{" "}
+                    >
+                        Keep your tokenized equities native on Robinhood Chain. Borrow USDC on Arbitrum.{" "}
                             <span className="font-bold">Zero bridging risk.</span>
-                        </motion.p>
+                    </motion.p>
 
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
                             className="mt-10 flex flex-wrap justify-start gap-4"
+                    >
+                        <Link
+                            href="#protocol"
+                            className="inline-flex items-center gap-2 rounded-md bg-[#0066FF] px-6 py-3 text-base font-semibold text-white transition-all hover:bg-[#0052cc] active:scale-[0.98]"
                         >
-                            <Link
-                                href="#protocol"
-                                className="inline-flex items-center gap-2 rounded-md bg-[#0066FF] px-6 py-3 text-base font-semibold text-white transition-all hover:bg-[#0052cc] active:scale-[0.98]"
-                            >
-                                Get started <ArrowRight className="h-4 w-4" />
-                            </Link>
-                            <Link
-                                href="#developers"
-                                className="inline-flex items-center gap-2 rounded-md border border-[#e6e6e6] bg-white px-6 py-3 text-base font-semibold text-black transition-all hover:border-[#cccccc] active:scale-[0.98]"
-                            >
-                                Read Documentation <ArrowRight className="h-4 w-4" />
-                            </Link>
-                        </motion.div>
+                            Get started <ArrowRight className="h-4 w-4" />
+                        </Link>
+                        <Link
+                            href="#developers"
+                            className="inline-flex items-center gap-2 rounded-md border border-[#e6e6e6] bg-white px-6 py-3 text-base font-semibold text-black transition-all hover:border-[#cccccc] active:scale-[0.98]"
+                        >
+                            Read Documentation <ArrowRight className="h-4 w-4" />
+                        </Link>
+                    </motion.div>
                     </div>
 
                     {/* Right side - Globe */}
@@ -136,28 +136,28 @@ export function Hero() {
                                 ) : (
                                     <div className="flex gap-16 animate-marquee whitespace-nowrap items-center" style={{ width: 'max-content' }}>
                                         {[...assets, ...assets, ...assets].map((asset, i) => {
-                                            return (
-                                                <div
-                                                    key={`${asset.ticker}-${i}`}
+                            return (
+                                <div
+                                    key={`${asset.ticker}-${i}`}
                                                     className="flex items-center gap-3 shrink-0 select-none opacity-60 hover:opacity-100 transition-opacity duration-300"
                                                     style={{ willChange: 'transform' }}
-                                                >
-                                                    <AssetIcon symbol={asset.ticker} size={32} />
+                                >
+                                    <AssetIcon symbol={asset.ticker} size={32} />
                                                     <div className="flex flex-col justify-center">
-                                                        <span className="text-sm font-bold text-black">{asset.ticker}</span>
+                                        <span className="text-sm font-bold text-black">{asset.ticker}</span>
                                                         {asset.price !== null && asset.price > 0 ? (
                                                             <span className={`text-sm font-semibold tabular-nums transition-colors duration-300 ${
                                                                 asset.priceChanged ? 'text-[#0066FF]' : 'text-black'
                                                             }`}>
-                                                                ${formatPrice(asset.price)}
-                                                            </span>
-                                                        ) : (
+                                                    ${formatPrice(asset.price)}
+                                                </span>
+                                        ) : (
                                                             <span className="h-4 w-16 rounded bg-[#e6e6e6] animate-pulse block mt-1" />
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
                                     </div>
                                 )}
                             </>

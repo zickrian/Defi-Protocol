@@ -1,6 +1,5 @@
 import { AssetIcon } from "@/components/ui/asset-icon"
-import { Plus, Minus } from "lucide-react"
-import type { AssetSymbol, MarketAsset } from "@/lib/mock-data"
+import type { MarketAsset } from "@/lib/mock-data"
 
 interface CollateralRowProps {
     asset: MarketAsset
@@ -18,24 +17,8 @@ export function CollateralRow({ asset, balance = 0 }: CollateralRowProps) {
             </div>
 
             {/* Protocol balance */}
-            <div className="text-[13px] font-medium text-gray-900 tabular-nums w-20 text-right">
+            <div className="text-[13px] font-medium text-gray-900 tabular-nums w-24 text-right">
                 {balance.toFixed(4)}
-            </div>
-
-            {/* Action buttons */}
-            <div className="flex items-center gap-1.5 ml-1">
-                <button
-                    className="w-7 h-7 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-colors"
-                    aria-label={`Supply ${asset.symbol}`}
-                >
-                    <Plus className="w-3 h-3" />
-                </button>
-                <button
-                    className="w-7 h-7 rounded-full border border-gray-200 flex items-center justify-center text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-colors"
-                    aria-label={`Withdraw ${asset.symbol}`}
-                >
-                    <Minus className="w-3 h-3" />
-                </button>
             </div>
         </div>
     )

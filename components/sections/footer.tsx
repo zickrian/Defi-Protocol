@@ -14,7 +14,7 @@ const FOOTER_SECTIONS = [
             { name: "Cross-Chain Bridge", href: "#" },
             { name: "Derivatives", href: "#" },
             { name: "Verified Pools", href: "#" },
-        ],
+    ],
     },
     {
         title: "Developers",
@@ -34,7 +34,7 @@ const FOOTER_SECTIONS = [
             { name: "Exchange API", href: "#" },
             { name: "Prime API", href: "#" },
             { name: "Derivatives API", href: "#" },
-        ],
+    ],
     },
     {
         title: "Support",
@@ -66,7 +66,7 @@ const FOOTER_SECTIONS = [
             { name: "Amazon price", href: "#" },
             { name: "AMD price", href: "#" },
             { name: "Netflix price", href: "#" },
-        ],
+    ],
     },
 ];
 

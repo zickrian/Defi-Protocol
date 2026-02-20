@@ -28,7 +28,6 @@ export function useLivePrices() {
     const [isFetching, setIsFetching] = useState(false);
 
     useEffect(() => {
-        let intervalId: NodeJS.Timeout;
         let isMounted = true;
 
         const loadPrices = async () => {
@@ -57,19 +56,11 @@ export function useLivePrices() {
             }
         };
 
-        // Initial load
+        // Only fetch once on mount
         loadPrices();
-
-        // Set up interval to refetch every 3 seconds
-        intervalId = setInterval(() => {
-            loadPrices();
-        }, 3000);
 
         return () => {
             isMounted = false;
-            if (intervalId) {
-                clearInterval(intervalId);
-            }
         };
     }, []);
 
